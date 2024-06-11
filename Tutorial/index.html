@@ -12,19 +12,37 @@
         This link should not work:
         <A ID="JQ" HREF="http://jquery.com">JQuery homepage</A>
     </LABEL>
+    <BR />
+    <DIV ID="weather">
+        Waiting for response to query weather..
+    </DIV>
     
     <SCRIPT SRC="../jquery-3.7.1.min.js"></SCRIPT>
     <SCRIPT>
-        function jqueryLinkHandler(clickEvent) {
+        function jqueryLinkHandler(clickEvent)
+        {
             clickEvent.preventDefault();
             $(clickEvent.target).hide("slow");
-            // Kinda cursed. It truncated the element to some small thing
-            // using a ton of render classes, basically to just 'JQuery',
-            // and then it slid downwards. Not exactly the "slowly fade
-            // out" I expected.
+            /*
+            * Kinda cursed. It truncated the element to some small thing
+            * using a ton of render classes, basically to just 'JQuery',
+            * and then it slid downwards. Not exactly the "slowly fade
+            * out" I expected.
+            */
         }
 
-        function main() {
+        function wttrInHandler(data, status)
+        {
+            if (status != "success")
+                $("#weather").html("Couldn't retrieve weather.");
+            else
+                $("#weather").html(data);
+                // Isn't this pretty dangerous?
+                // What if data was a HTML string?
+        }
+
+        function main()
+        {
             $("a#SP").click(_ => alert("Thanks for stopping by us!"));
             // I just guessed that that's how we specify an element
             // and ID at the same time. Pretty pointless, though.
@@ -34,6 +52,20 @@
             $("a").addClass("italic");
             // Should surprisingly run method on all instances.
             $("a#JQ").removeClass("italic");
+
+            $.get("http://wttr.in/Kuala+Lumpur", wttrInHandler);
+            /*
+            * Funny thing is. Initially I didn't write the
+            * protocol, so it thought I wanted local file
+            * /wttr.in/Kuala+Lumpur. It bjorked due to CORS as I
+            * had this file opened directly, so I got around it
+            * by running python -m http.server on the repo root
+            * and nav'ing to /tutorial/index.html. But! Adding
+            * the protocol now, somehow this remote request works
+            * with a directly opened file. What did JQuery do?
+            * Normally any kind of remote request fails, be it
+            * from XMLHTTPRequest or Fetch for me.
+            */
         }
 
         $(document).ready(main);
