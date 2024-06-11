@@ -1,9 +1,19 @@
 <!DOCTYPE HTML>
 <HTML>
 
+    <META CHARSET="UTF-8" />
+
+    <LABEL>
+        This link should not work:
+        <A HREF="http://jquery.com">JQuery homepage</A>
+    </LABEL>
+    
     <SCRIPT SRC="../jquery-3.7.1.min.js"></SCRIPT>
     <SCRIPT>
-        
+        function main() {
+            $("a").click(_ => alert("Thanks for stopping by us!"));
+        }
+        $(document).ready(main);
     </SCRIPT>
 
 </HTML>
