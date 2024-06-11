@@ -7,7 +7,7 @@
         This link should be fine:
         <A ID="SP" HREF="http://startpage.com">StartPage search engine</A>
     </LABEL>
-    <BR>
+    <BR />
     <LABEL>
         This link should not work:
         <A ID="JQ" HREF="http://jquery.com">JQuery homepage</A>
@@ -15,17 +15,34 @@
     
     <SCRIPT SRC="../jquery-3.7.1.min.js"></SCRIPT>
     <SCRIPT>
+        function jqueryLinkHandler(clickEvent) {
+            clickEvent.preventDefault();
+            $(clickEvent.target).hide("slow");
+            // Kinda cursed. It truncated the element to some small thing
+            // using a ton of render classes, basically to just 'JQuery',
+            // and then it slid downwards. Not exactly the "slowly fade
+            // out" I expected.
+        }
+
         function main() {
             $("a#SP").click(_ => alert("Thanks for stopping by us!"));
             // I just guessed that that's how we specify an element
             // and ID at the same time. Pretty pointless, though.
 
-            function jqueryLinkHandler(clickEvent) {
-                clickEvent.preventDefault();
-            };
             $("#JQ").click(jqueryLinkHandler);
+
+            $("a").addClass("italic");
+            // Should surprisingly run method on all instances.
+            $("a#JQ").removeClass("italic");
         }
+
         $(document).ready(main);
     </SCRIPT>
+
+    <STYLE>
+        a.italic {
+            font-style: italic;
+        }
+    </STYLE>
 
 </HTML>
