@@ -4,14 +4,26 @@
     <META CHARSET="UTF-8" />
 
     <LABEL>
+        This link should be fine:
+        <A ID="SP" HREF="http://startpage.com">StartPage search engine</A>
+    </LABEL>
+    <BR>
+    <LABEL>
         This link should not work:
-        <A HREF="http://jquery.com">JQuery homepage</A>
+        <A ID="JQ" HREF="http://jquery.com">JQuery homepage</A>
     </LABEL>
     
     <SCRIPT SRC="../jquery-3.7.1.min.js"></SCRIPT>
     <SCRIPT>
         function main() {
-            $("a").click(_ => alert("Thanks for stopping by us!"));
+            $("a#SP").click(_ => alert("Thanks for stopping by us!"));
+            // I just guessed that that's how we specify an element
+            // and ID at the same time. Pretty pointless, though.
+
+            function jqueryLinkHandler(clickEvent) {
+                clickEvent.preventDefault();
+            };
+            $("#JQ").click(jqueryLinkHandler);
         }
         $(document).ready(main);
     </SCRIPT>
